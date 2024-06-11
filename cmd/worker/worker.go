@@ -11,8 +11,8 @@ const defaultPriority = 0
 
 // Job 구조체 정의: 작업을 함수로 정의
 type Job struct {
-	priority int          // 작업 우선순위
-	execute  func() error // 실행할 작업
+	Priority int          // 작업 우선순위
+	Execute  func() error // 실행할 작업
 }
 
 // PriorityQueue 구조체 정의
@@ -32,8 +32,8 @@ func NewPriorityQueue() *PriorityQueue {
 func (pq *PriorityQueue) Push(job *Job) {
 	pq.lock.Lock()
 	defer pq.lock.Unlock()
-	if job.priority == 0 {
-		job.priority = defaultPriority
+	if job.Priority == 0 {
+		job.Priority = defaultPriority
 	}
 	pq.jobs = append(pq.jobs, job)
 	pq.up(len(pq.jobs) - 1)
@@ -57,7 +57,7 @@ func (pq *PriorityQueue) Pop() *Job {
 func (pq *PriorityQueue) up(index int) {
 	for {
 		parent := (index - 1) / 2
-		if parent == index || pq.jobs[parent].priority <= pq.jobs[index].priority {
+		if parent == index || pq.jobs[parent].Priority <= pq.jobs[index].Priority {
 			break
 		}
 		pq.swap(parent, index)
@@ -72,10 +72,10 @@ func (pq *PriorityQueue) down(index int) {
 		if child >= len(pq.jobs) || child < 0 {
 			break
 		}
-		if right := child + 1; right < len(pq.jobs) && pq.jobs[right].priority < pq.jobs[child].priority {
+		if right := child + 1; right < len(pq.jobs) && pq.jobs[right].Priority < pq.jobs[child].Priority {
 			child = right
 		}
-		if pq.jobs[child].priority >= pq.jobs[index].priority {
+		if pq.jobs[child].Priority >= pq.jobs[index].Priority {
 			break
 		}
 		pq.swap(child, index)
@@ -124,11 +124,11 @@ func (w *Worker) Start(wt ...int) {
 				job := w.pq.Pop()
 				if job != nil {
 					// 작업 처리
-					err := job.execute()
+					err := job.Execute()
 					if err != nil {
 						fmt.Printf("Error executing job: %v\n", err)
 					} else {
-						fmt.Printf("Successfully executed job with priority %d\n", job.priority)
+						fmt.Printf("Successfully executed job with priority %d\n", job.Priority)
 					}
 				}
 				// 잠시 대기
