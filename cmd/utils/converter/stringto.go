@@ -1,7 +1,7 @@
 package converter
 
 import (
-	"hawoond/internal/generator"
+	"github.com/hawoond/hawoond/internal/generator"
 )
 
 // StringToInt는 문자열을 정수(int)로 변환합니다.

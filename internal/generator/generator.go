@@ -1,7 +1,7 @@
 package generator
 
 import (
-	"hawoond/internal/common/errorkit"
+	"github.com/hawoond/hawoond/internal/common/errorkit"
 )
 
 const intSize = 32 << (^uint(0) >> 63)

@@ -1,7 +1,7 @@
 package converter
 
 import (
-	"hawoond/internal/generator"
+	"github.com/hawoond/hawoond/internal/generator"
 )
 
 // IntToString은 정수를 문자열로 변환합니다.
