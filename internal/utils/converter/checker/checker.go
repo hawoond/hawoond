@@ -1,11 +1,13 @@
-package generator
+package checker
 
 import (
 	"reflect"
 )
 
+type Checker struct{}
+
 // CheckConvertibleTypes는 주어진 값을 받아서 변환 가능한 타입들을 반환합니다.
-func CheckConvertibleTypes(value interface{}) []string {
+func (Checker) CheckConvertibleTypes(value interface{}) []string {
 	types := []string{}
 	val := reflect.ValueOf(value)
 
@@ -45,4 +47,8 @@ func CheckConvertibleTypes(value interface{}) []string {
 	}
 
 	return types
+}
+
+func IsEmpty(value any) bool {
+	return reflect.ValueOf(value).IsZero()
 }
