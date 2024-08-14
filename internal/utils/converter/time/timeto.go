@@ -5,8 +5,11 @@ import (
 	"time"
 )
 
-// ConvertTimeFormat 함수는 주어진 시간 문자열을 지정된 포맷으로 변환합니다.
-func ConvertTimeFormat(inputTime string, toFormat string, fromFormat ...string) (result string, err error) {
+type TimeTo struct{}
+
+// 주어진 시간 문자열을 지정된 포맷으로 변환합니다.
+// fromFormat이 제공되지 않은 경우 inputTime의 포맷을 자동으로 분석합니다.
+func (TimeTo) ConvertTimeFormat(inputTime string, toFormat string, fromFormat ...string) (result string, err error) {
 	var layout string
 
 	// fromFormat이 제공된 경우 해당 포맷을 사용하여 파싱
@@ -31,7 +34,7 @@ func ConvertTimeFormat(inputTime string, toFormat string, fromFormat ...string) 
 	return
 }
 
-// detectTimeFormat 함수는 주어진 시간 문자열의 포맷을 자동으로 분석합니다.
+// 주어진 시간 문자열의 포맷을 자동으로 분석합니다.
 func detectTimeFormat(inputTime string) (string, error) {
 	formats := []string{
 		"2006-01-02T15:04:05",                                // ISO 8601
