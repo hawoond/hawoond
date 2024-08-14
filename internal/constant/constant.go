@@ -2,6 +2,8 @@ package constant
 
 import "sync"
 
+type Constant struct{}
+
 var (
 	instances = make(map[string]any)
 	onceMap   = make(map[string]*sync.Once)
@@ -9,7 +11,7 @@ var (
 )
 
 // SetInstance: 인스턴스 최초 설정
-func SetInstance(key string, value any) {
+func (Constant) SetInstance(key string, value any) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
@@ -23,7 +25,7 @@ func SetInstance(key string, value any) {
 }
 
 // GetInstance: 인스턴스 반환
-func GetInstance(key string) (any, bool) {
+func (Constant) GetInstance(key string) (any, bool) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
