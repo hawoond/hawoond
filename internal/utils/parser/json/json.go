@@ -9,10 +9,12 @@ import (
 
 type JSONValue any
 
+type Json struct{}
+
 // ParseJSON: JSON 문자열을 파싱하여 JSONValue 반환
 // input: JSON 문자열
 // output: 파싱된 JSON 객체 또는 오류
-func ParseJSON(input string) (JSONValue, error) {
+func (Json) ParseJSON(input string) (JSONValue, error) {
 	input = strings.TrimSpace(input)
 	if len(input) == 0 {
 		return nil, fmt.Errorf("empty input")
@@ -170,7 +172,7 @@ func parseValue(input string) (JSONValue, string, error) {
 // ToJSON: 아무거나 JSON 문자열로 변환
 // input: 아무거나
 // output: JSON 문자열 또는 오류
-func ToJSON(value any) (string, error) {
+func (j *Json) ToJSON(value any) (string, error) {
 	v := reflect.ValueOf(value)
 	switch v.Kind() {
 	case reflect.Map:
@@ -196,7 +198,7 @@ func ToJSON(value any) (string, error) {
 		if v.IsNil() {
 			return "null", nil
 		}
-		return ToJSON(v.Elem().Interface())
+		return j.ToJSON(v.Elem().Interface())
 	default:
 		return "", fmt.Errorf("unsupported type: %s", v.Kind())
 	}
@@ -213,11 +215,11 @@ func mapToJSON(input interface{}) (string, error) {
 		if i > 0 {
 			builder.WriteString(", ")
 		}
-		keyStr, err := ToJSON(key.Interface())
+		keyStr, err := (&Json{}).ToJSON(key.Interface())
 		if err != nil {
 			return "", err
 		}
-		valueStr, err := ToJSON(v.MapIndex(key).Interface())
+		valueStr, err := (&Json{}).ToJSON(v.MapIndex(key).Interface())
 		if err != nil {
 			return "", err
 		}
@@ -241,7 +243,7 @@ func structToJSON(input interface{}) (string, error) {
 		}
 		fieldName := t.Field(i).Name
 		fieldValue := v.Field(i).Interface()
-		valueStr, err := ToJSON(fieldValue)
+		valueStr, err := (&Json{}).ToJSON(fieldValue)
 		if err != nil {
 			return "", err
 		}
@@ -262,7 +264,7 @@ func arrayToJSON(input interface{}) (string, error) {
 		if i > 0 {
 			builder.WriteString(", ")
 		}
-		valueStr, err := ToJSON(v.Index(i).Interface())
+		valueStr, err := (&Json{}).ToJSON(v.Index(i).Interface())
 		if err != nil {
 			return "", err
 		}

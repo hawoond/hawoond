@@ -1,12 +1,14 @@
-package parser
+package structure
 
 import (
 	"errors"
 	"reflect"
 )
 
+type Struct struct{}
+
 // StructToMap 함수는 주어진 구조체를 맵으로 변환합니다.
-func StructToMap(v interface{}) (result map[string]interface{}, err error) {
+func (Struct) StructToMap(v interface{}) (result map[string]interface{}, err error) {
 	result = make(map[string]interface{})
 	val := reflect.ValueOf(v)
 
@@ -28,7 +30,7 @@ func StructToMap(v interface{}) (result map[string]interface{}, err error) {
 }
 
 // MapToStruct 함수는 주어진 맵을 구조체로 변환합니다.
-func MapToStruct(m map[string]interface{}, v interface{}) error {
+func (Struct) MapToStruct(m map[string]interface{}, v interface{}) error {
 	val := reflect.ValueOf(v)
 
 	// 입력이 포인터가 아닌 경우 오류 반환
